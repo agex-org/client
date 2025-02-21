@@ -27,6 +27,7 @@ class _ChatScreenState extends State<ChatScreen> {
       setState(() {
         messages.clear();
         messages.addAll(Iterable.castFrom(resp));
+        print("Added history");
       });
     });
     super.initState();
@@ -56,33 +57,36 @@ class _ChatScreenState extends State<ChatScreen> {
                 itemCount: messages.length,
               ),
             ),
-            Row(
-              children: [
-                Expanded(
-                  child: TextFormField(
-                    decoration: InputDecoration(border: OutlineInputBorder()),
-                    controller: _promptTextController,
-                  ),
-                ),
-                IconButton(
-                  onPressed: () async {
-                    setState(() {
-                      isLoading = true;
-                    });
-                    var resp = await query(_promptTextController.text);
-                    setState(() {
-                      isLoading = false;
-                      if (resp.isNotEmpty) {
-                        messages.clear();
-                        messages.addAll(Iterable.castFrom(resp));
-                      }
-                    });
-                    print(resp);
-                  },
-                  icon: Icon(Icons.send),
-                )
-              ],
-            )
+            isLoading
+                ? CircularProgressIndicator()
+                : Row(
+                    children: [
+                      Expanded(
+                        child: TextFormField(
+                          decoration:
+                              InputDecoration(border: OutlineInputBorder()),
+                          controller: _promptTextController,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () async {
+                          setState(() {
+                            isLoading = true;
+                          });
+                          var resp = await query(_promptTextController.text);
+                          setState(() {
+                            isLoading = false;
+                            if (resp.isNotEmpty) {
+                              messages.addAll(Iterable.castFrom(resp));
+                              _promptTextController.clear();
+                            }
+                          });
+                          print(resp);
+                        },
+                        icon: Icon(Icons.send),
+                      )
+                    ],
+                  )
           ],
         ),
       ),
@@ -104,10 +108,10 @@ class _ChatScreenState extends State<ChatScreen> {
 
       var json = jsonDecode(resp.body) as Map<String, dynamic>;
 
-      var history = json["history"];
-      for (var item in history) {
-        responses.add(item["response"]);
-      }
+      // var history = json["history"];
+      // for (var item in history) {
+      //   responses.add(item["response"]);
+      // }
       responses.add(json["response"]);
       print(responses);
     } catch (e) {
