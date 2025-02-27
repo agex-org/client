@@ -3,7 +3,7 @@
 
 ## Installing flutter
 
-Install flutter from [here](http://google.com)
+Install flutter from [here](https://docs.flutter.dev/get-started/install)
 
 
 ## Installing project dependencies
