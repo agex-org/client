@@ -1,4 +1,3 @@
-import 'package:agex_client/screens/chat_screen.dart';
 import 'package:flutter/material.dart';
 
 class ChatHistoryItem extends StatelessWidget {

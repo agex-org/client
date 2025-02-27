@@ -1,16 +1,19 @@
-# agex_client
+# Agex Client
 
-A new Flutter project.
 
-## Getting Started
+## Installing flutter
 
-This project is a starting point for a Flutter application.
+Install flutter from [here](http://google.com)
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Installing project dependencies
+To install dependencies, run:
+```
+flutter pub get
+```
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Running the project
+To run the project on chrome, run:
+```
+flutter run -d chrome
+```

@@ -50,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
         },
         onNewChatPresses: () async {
           var sessionId = await createSession("New Chat");
-          if (sessionId != null) {
+          if (sessionId != null && mounted) {
             print("sessionid: $sessionId");
             Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => ChatScreen(
