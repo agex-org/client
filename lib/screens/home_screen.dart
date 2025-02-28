@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:agex_client/models/chat_history.dart';
 import 'package:agex_client/screens/chat_screen.dart';
+import 'package:agex_client/screens/landing.dart';
 import 'package:agex_client/widgets/chat_history_item.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -59,6 +60,11 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ));
           }
+        },
+        onLandingPressed: () {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => AgexLanding(),
+          ));
         },
       ) as PreferredSizeWidget?,
       body: Padding(
@@ -188,9 +194,11 @@ class CustomAppBar extends StatelessWidget {
   }
 }
 
-PreferredSizeWidget getAppBar(
-    {required VoidCallback onSettingsPressed,
-    required VoidCallback onNewChatPresses}) {
+PreferredSizeWidget getAppBar({
+  required VoidCallback onSettingsPressed,
+  required VoidCallback onNewChatPresses,
+  required VoidCallback onLandingPressed,
+}) {
   return AppBar(
     title: Text("Agex"),
     elevation: 3,
@@ -205,6 +213,13 @@ PreferredSizeWidget getAppBar(
           foregroundColor: WidgetStatePropertyAll(Colors.white),
         ),
         child: Text("New Chat"),
+      ),
+      ElevatedButton(
+        onPressed: onLandingPressed,
+        style: ButtonStyle(
+          foregroundColor: WidgetStatePropertyAll(Colors.white),
+        ),
+        child: Text("Landing"),
       ),
       SizedBox(
         width: 16,
