@@ -90,36 +90,8 @@ class AgexLanding extends StatelessWidget {
             style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
           ),
           Spacer(),
-          RoundedTextField(
-            width: 200,
-          ),
-          SizedBox(
-            width: 40,
-          ),
-          RoundedIconButton(icon: Icons.language, onPressed: () {}),
-          SizedBox(
-            width: 20,
-          ),
-          RoundedIconButton(icon: Icons.notifications_none, onPressed: () {}),
-          SizedBox(
-            width: 20,
-          ),
-          RoundedIconButton(
-              icon: Icons.mark_chat_unread_outlined, onPressed: () {}),
-          SizedBox(
-            width: 40,
-          ),
-          Container(
-            width: 50,
-            height: 50,
-            decoration: BoxDecoration(
-              color: Colors.blueGrey,
-              borderRadius: BorderRadius.circular(100),
-            ),
-          ),
-          SizedBox(
-            width: 40,
-          ),
+          RoundedTextField(width: 300, showSubmitButton: true),
+          SizedBox(width: 20),
         ],
       ),
     );
@@ -213,36 +185,40 @@ class NetworkStatusSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: NetworkStatusTile(
-            title: "Block height",
-            value: 12345,
-            change: 1.23,
+    return Container(
+      height: 150,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Expanded(
+            child: NetworkStatusTile(
+              title: "Block height",
+              value: 12345,
+              change: 1.23,
+            ),
           ),
-        ),
-        SizedBox(
-          width: 20,
-        ),
-        Expanded(
-          child: NetworkStatusTile(
-            title: "Active addresses",
-            value: 54321,
-            change: 4.56,
+          SizedBox(
+            width: 20,
           ),
-        ),
-        SizedBox(
-          width: 20,
-        ),
-        Expanded(
-          child: NetworkStatusTile(
-            title: "Transactions last 24h",
-            value: 6789,
-            change: 7.89,
+          Expanded(
+            child: NetworkStatusTile(
+              title: "Active addresses",
+              value: 54321,
+              change: 4.56,
+            ),
           ),
-        ),
-      ],
+          SizedBox(
+            width: 20,
+          ),
+          Expanded(
+            child: NetworkStatusTile(
+              title: "Transactions last 24h",
+              value: 6789,
+              change: 7.89,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -262,8 +238,7 @@ class NetworkStatusTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 150,
-      padding: EdgeInsets.all(20),
+      padding: EdgeInsets.symmetric(horizontal: 20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
@@ -302,47 +277,65 @@ class SecondHero extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    var textsPart = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Agex AI Assistant",
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                  fontWeight: FontWeight.w300,
-                  fontSize: 14,
-                  color: Color(0xff9cabba),
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Text(
-                "Ask Agex anything about the blockchain",
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              Text(
-                "Agex is an Al assistant that can help you explore the blockchain. You can ask Agex questions about transactions, addresses, or blocks. Agex will give you the most relevant information and help you understand what's happening on the blockchain.",
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                  fontWeight: FontWeight.w300,
-                  fontSize: 14,
-                  color: Color(0xff9cabba),
-                ),
-              ),
-            ],
+        Text(
+          "Agex AI Assistant",
+          textAlign: TextAlign.left,
+          style: TextStyle(
+            fontWeight: FontWeight.w300,
+            fontSize: 14,
+            color: Color(0xff9cabba),
           ),
         ),
+        SizedBox(
+          height: 10,
+        ),
+        Text(
+          "Ask Agex anything about the blockchain",
+          textAlign: TextAlign.left,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
+        ),
+        SizedBox(
+          height: 5,
+        ),
+        Text(
+          "Agex is an Al assistant that can help you explore the blockchain. You can ask Agex questions about transactions, addresses, or blocks. Agex will give you the most relevant information and help you understand what's happening on the blockchain.",
+          textAlign: TextAlign.left,
+          style: TextStyle(
+            fontWeight: FontWeight.w300,
+            fontSize: 14,
+            color: Color(0xff9cabba),
+          ),
+        ),
+      ],
+    );
+
+    var width = MediaQuery.of(context).size.width;
+
+    if (width <= 800) {
+      return Column(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: Image.asset(
+              "assets/images/hero2.png",
+              width: width * 0.8,
+            ),
+          ),
+          SizedBox(height: 20),
+          textsPart,
+        ],
+      );
+    }
+
+    return Row(
+      children: [
+        Expanded(child: textsPart),
         SizedBox(
           width: 40,
         ),

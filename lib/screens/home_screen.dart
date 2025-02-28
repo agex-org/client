@@ -102,9 +102,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemCount: chatHistoryList.length,
               ),
             ),
-            // ChatHistoryItem("What's the meaning of world", url, ""),
-            // ChatHistoryItem("What's the meaning of world", url, ""),
-            // ChatHistoryItem("What's the meaning of world", url, "")
           ],
         ),
       ),
