@@ -3,6 +3,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+class Message {
+  const Message(this.query, this.response);
+  final String query;
+  final String response;
+}
+
 class ChatScreen extends StatefulWidget {
   final String? title;
   final String url;
@@ -18,7 +24,7 @@ class _ChatScreenState extends State<ChatScreen> {
   final _promptTextController = TextEditingController();
 
   bool isLoading = false;
-  List<String> messages = [];
+  List<Message> messages = [];
 
   @override
   void initState() {
@@ -47,18 +53,41 @@ class _ChatScreenState extends State<ChatScreen> {
             Expanded(
               child: ListView.builder(
                 itemBuilder: (context, index) => Card(
-                  child: Container(
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                        color: const Color.fromARGB(31, 82, 82, 82)),
-                    child: Text(messages[index]),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(12),
+                        margin: EdgeInsets.symmetric(vertical: 6),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: const Color.fromARGB(31, 82, 82, 82),
+                        ),
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: Text(messages[index].query),
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(12),
+                        margin: EdgeInsets.symmetric(vertical: 6),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: const Color.fromARGB(31, 82, 82, 82),
+                        ),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(messages[index].response),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 itemCount: messages.length,
               ),
             ),
             isLoading
-                ? CircularProgressIndicator()
+                ? SizedBox(width: 50, child: CircularProgressIndicator())
                 : Row(
                     children: [
                       Expanded(
@@ -76,8 +105,8 @@ class _ChatScreenState extends State<ChatScreen> {
                           var resp = await query(_promptTextController.text);
                           setState(() {
                             isLoading = false;
-                            if (resp.isNotEmpty) {
-                              messages.addAll(Iterable.castFrom(resp));
+                            if (resp != null) {
+                              messages.add(resp);
                               _promptTextController.clear();
                             }
                           });
@@ -93,8 +122,8 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  Future<List<String?>> query(String prompt) async {
-    List<String?> responses = [];
+  Future<Message?> query(String prompt) async {
+    Message? response;
     var endpoint = Uri.parse("${widget.url}/${widget.sessionId}/query");
     try {
       var resp = await http.post(
@@ -112,17 +141,20 @@ class _ChatScreenState extends State<ChatScreen> {
       // for (var item in history) {
       //   responses.add(item["response"]);
       // }
-      responses.add(json["response"]);
-      print(responses);
+      // responses.add(prompt);
+      // responses.add(json["response"]);
+
+      response = Message(prompt, json["response"]);
+      print(response);
     } catch (e) {
       print(e);
     }
 
-    return responses;
+    return response;
   }
 
-  Future<List<String?>> getHistory() async {
-    List<String?> responses = [];
+  Future<List<Message?>> getHistory() async {
+    List<Message> responses = [];
     var endpoint = Uri.parse("${widget.url}/history/${widget.sessionId}");
     try {
       var resp = await http.get(
@@ -136,8 +168,10 @@ class _ChatScreenState extends State<ChatScreen> {
       var json = jsonDecode(resp.body) as Map<String, dynamic>;
 
       var history = json["history"];
+
+      print(history);
       for (var item in history) {
-        responses.add(item["response"]);
+        responses.add(Message(item["query"], item["response"]));
       }
       // responses.add(json["response"]);
       print(responses);
