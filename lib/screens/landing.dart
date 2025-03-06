@@ -85,6 +85,13 @@ class AgexLanding extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 30),
       child: Row(
         children: [
+          ClipOval(
+            child: Image.asset(
+              "assets/images/logo.png",
+              width: 60,
+            ),
+          ),
+          SizedBox(width: 20),
           Text(
             "Agex",
             style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
