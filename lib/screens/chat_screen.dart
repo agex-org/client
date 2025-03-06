@@ -95,23 +95,11 @@ class _ChatScreenState extends State<ChatScreen> {
                           decoration:
                               InputDecoration(border: OutlineInputBorder()),
                           controller: _promptTextController,
+                          onFieldSubmitted: onFormSubmitted,
                         ),
                       ),
                       IconButton(
-                        onPressed: () async {
-                          setState(() {
-                            isLoading = true;
-                          });
-                          var resp = await query(_promptTextController.text);
-                          setState(() {
-                            isLoading = false;
-                            if (resp != null) {
-                              messages.add(resp);
-                              _promptTextController.clear();
-                            }
-                          });
-                          print(resp);
-                        },
+                        onPressed: () => onFormSubmitted(""),
                         icon: Icon(Icons.send),
                       )
                     ],
@@ -120,6 +108,21 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
       ),
     );
+  }
+
+  void onFormSubmitted(String? _) async {
+    setState(() {
+      isLoading = true;
+    });
+    var resp = await query(_promptTextController.text);
+    setState(() {
+      isLoading = false;
+      if (resp != null) {
+        messages.add(resp);
+        _promptTextController.clear();
+      }
+    });
+    print(resp);
   }
 
   Future<Message?> query(String prompt) async {
