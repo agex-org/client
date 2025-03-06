@@ -22,6 +22,7 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final _promptTextController = TextEditingController();
+  final _scrollController = ScrollController();
 
   bool isLoading = false;
   List<Message> messages = [];
@@ -35,7 +36,10 @@ class _ChatScreenState extends State<ChatScreen> {
         messages.addAll(Iterable.castFrom(resp));
         print("Added history");
       });
+
+      scrollToEnd();
     });
+
     super.initState();
   }
 
@@ -45,13 +49,14 @@ class _ChatScreenState extends State<ChatScreen> {
       appBar: AppBar(
         title: widget.title != null ? Text(widget.title!) : Text("New Chat"),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Expanded(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
               child: ListView.builder(
+                controller: _scrollController,
                 itemBuilder: (context, index) => Card(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -86,28 +91,57 @@ class _ChatScreenState extends State<ChatScreen> {
                 itemCount: messages.length,
               ),
             ),
-            isLoading
-                ? SizedBox(width: 50, child: CircularProgressIndicator())
-                : Row(
-                    children: [
-                      Expanded(
-                        child: TextFormField(
-                          decoration:
-                              InputDecoration(border: OutlineInputBorder()),
-                          controller: _promptTextController,
-                          onFieldSubmitted: onFormSubmitted,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Container(
+              alignment: Alignment.center,
+              height: 70,
+              child: isLoading
+                  ? CircularProgressIndicator()
+                  : Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                              hintText: "Write your query here",
+                              hintStyle: TextStyle(color: Colors.blueGrey),
+                              border: OutlineInputBorder(),
+                            ),
+                            controller: _promptTextController,
+                            onFieldSubmitted: (_) {
+                              setState(() {
+                                onFormSubmitted("");
+                              });
+                              scrollToEnd();
+                            },
+                          ),
                         ),
-                      ),
-                      IconButton(
-                        onPressed: () => onFormSubmitted(""),
-                        icon: Icon(Icons.send),
-                      )
-                    ],
-                  )
-          ],
-        ),
+                        SizedBox(width: 10),
+                        IconButton(
+                          onPressed: () {
+                            setState(() {
+                              onFormSubmitted("");
+                            });
+                            scrollToEnd();
+                          },
+                          icon: Icon(Icons.send),
+                        )
+                      ],
+                    ),
+            ),
+          )
+        ],
       ),
     );
+  }
+
+  void scrollToEnd() {
+    Future.delayed(Duration(milliseconds: 100), () {
+      _scrollController.animateTo(_scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 500), curve: Curves.easeOut);
+    });
   }
 
   void onFormSubmitted(String? _) async {
@@ -121,6 +155,11 @@ class _ChatScreenState extends State<ChatScreen> {
         messages.add(resp);
         _promptTextController.clear();
       }
+
+      Future.delayed(Duration(milliseconds: 100), () {
+        _scrollController.animateTo(_scrollController.position.maxScrollExtent,
+            duration: const Duration(milliseconds: 500), curve: Curves.easeOut);
+      });
     });
     print(resp);
   }
