@@ -57,36 +57,34 @@ class _ChatScreenState extends State<ChatScreen> {
               padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
               child: ListView.builder(
                 controller: _scrollController,
-                itemBuilder: (context, index) => Card(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
+                itemBuilder: (context, index) => Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Container(
                         padding: EdgeInsets.all(12),
                         margin: EdgeInsets.symmetric(vertical: 6),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           color: const Color.fromARGB(31, 82, 82, 82),
                         ),
-                        child: Align(
-                          alignment: Alignment.centerRight,
-                          child: Text(messages[index].query),
-                        ),
+                        child: Text(messages[index].query),
                       ),
-                      Container(
+                    ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Container(
                         padding: EdgeInsets.all(12),
                         margin: EdgeInsets.symmetric(vertical: 6),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           color: const Color.fromARGB(31, 82, 82, 82),
                         ),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(messages[index].response),
-                        ),
+                        child: Text(messages[index].response),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
                 itemCount: messages.length,
               ),
