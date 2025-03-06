@@ -197,7 +197,18 @@ PreferredSizeWidget getAppBar({
   required VoidCallback onLandingPressed,
 }) {
   return AppBar(
-    title: Text("Agex"),
+    title: Row(
+      children: [
+        ClipOval(
+          child: Image.asset(
+            "assets/images/logo.png",
+            width: 35,
+          ),
+        ),
+        SizedBox(width: 10),
+        Text("Agex"),
+      ],
+    ),
     elevation: 3,
     leading: IconButton(
       onPressed: onSettingsPressed,
@@ -217,6 +228,20 @@ PreferredSizeWidget getAppBar({
           foregroundColor: WidgetStatePropertyAll(Colors.white),
         ),
         child: Text("Landing"),
+      ),
+      ElevatedButton(
+        onPressed: () async {
+          http.post(
+            Uri.parse("http://localhost:8000/api/flush"),
+            headers: <String, String>{
+              'Content-Type': 'application/json',
+            },
+          );
+        },
+        style: ButtonStyle(
+          foregroundColor: WidgetStatePropertyAll(Colors.white),
+        ),
+        child: Text("Flush History"),
       ),
       SizedBox(
         width: 16,

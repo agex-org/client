@@ -104,6 +104,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       children: [
                         Expanded(
                           child: TextFormField(
+                            autofocus: true,
                             decoration: InputDecoration(
                               hintText: "Write your query here",
                               hintStyle: TextStyle(color: Colors.blueGrey),
