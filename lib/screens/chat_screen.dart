@@ -123,7 +123,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   Future<List<String?>> getHistory() async {
     List<String?> responses = [];
-    var endpoint = Uri.parse("${widget.url}/${widget.sessionId}");
+    var endpoint = Uri.parse("${widget.url}/history/${widget.sessionId}");
     try {
       var resp = await http.get(
         endpoint,

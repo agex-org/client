@@ -18,7 +18,7 @@ class AgexLanding extends StatelessWidget {
             SizedBox(
               height: 20,
             ),
-            Container(
+            SizedBox(
               width: MediaQuery.of(context).size.width * 0.8,
               child: Column(
                 children: [
@@ -124,10 +124,10 @@ class CustomListTile extends StatelessWidget {
   final String subtitle;
 
   const CustomListTile({
-    Key? key,
+    super.key,
     required this.title,
     required this.subtitle,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -185,7 +185,7 @@ class NetworkStatusSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 150,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -422,7 +422,7 @@ class FirstHero extends StatelessWidget {
         SizedBox(
           width: 40,
         ),
-        Container(width: 360, child: heroTexts),
+        SizedBox(width: 360, child: heroTexts),
       ],
     );
   }

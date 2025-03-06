@@ -6,11 +6,11 @@ class RoundedTextField extends StatefulWidget {
   final bool showSubmitButton; // Whether to show the submit button
 
   const RoundedTextField({
-    Key? key,
+    super.key,
     required this.width,
     this.onSubmit,
     this.showSubmitButton = false, // Default to false
-  }) : super(key: key);
+  });
 
   @override
   _RoundedTextFieldState createState() => _RoundedTextFieldState();
@@ -94,10 +94,10 @@ class RoundedIconButton extends StatelessWidget {
   final VoidCallback onPressed;
 
   const RoundedIconButton({
-    Key? key,
+    super.key,
     required this.icon,
     required this.onPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
