@@ -62,9 +62,19 @@ class _HomeScreenState extends State<HomeScreen> {
           }
         },
         onLandingPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => AgexLanding(),
-          ));
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => AgexLanding(),
+            ),
+          );
+        },
+        onFlushHistory: () async {
+          http.post(
+            Uri.parse("$url/flush"),
+            headers: <String, String>{
+              'Content-Type': 'application/json',
+            },
+          );
         },
       ) as PreferredSizeWidget?,
       body: Padding(
@@ -112,7 +122,7 @@ class _HomeScreenState extends State<HomeScreen> {
     List<ChatHistory> chatHistoryList = [];
     try {
       var resp = await http.get(
-        Uri.parse("http://localhost:8000/api/list"),
+        Uri.parse("$url/list"),
         headers: <String, String>{
           'Content-Type': 'application/json',
         },
@@ -139,7 +149,7 @@ class _HomeScreenState extends State<HomeScreen> {
     String? sessionId;
     try {
       var resp = await http.post(
-        Uri.parse("http://localhost:8000/api/create"),
+        Uri.parse("$url/create"),
         headers: <String, String>{
           'Content-Type': 'application/json',
         },
@@ -195,6 +205,7 @@ PreferredSizeWidget getAppBar({
   required VoidCallback onSettingsPressed,
   required VoidCallback onNewChatPresses,
   required VoidCallback onLandingPressed,
+  required VoidCallback onFlushHistory,
 }) {
   return AppBar(
     title: Row(
@@ -230,14 +241,7 @@ PreferredSizeWidget getAppBar({
         child: Text("Landing"),
       ),
       ElevatedButton(
-        onPressed: () async {
-          http.post(
-            Uri.parse("http://localhost:8000/api/flush"),
-            headers: <String, String>{
-              'Content-Type': 'application/json',
-            },
-          );
-        },
+        onPressed: onFlushHistory,
         style: ButtonStyle(
           foregroundColor: WidgetStatePropertyAll(Colors.white),
         ),
