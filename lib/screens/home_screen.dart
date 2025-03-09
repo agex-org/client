@@ -15,7 +15,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  String url = "http://localhost:8000/api";
+  String url = "https://apiagex.darkube.app/api";
 
   bool isLoading = false;
 
